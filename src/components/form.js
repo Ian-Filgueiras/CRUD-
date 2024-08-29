@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TextField,
   Button,
@@ -11,7 +11,7 @@ import {
 import InputMask from 'react-input-mask';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-const Form = ({ onSubmit }) => {
+const Form = ({ onSubmit, user }) => {
   const [formData, setFormData] = useState({
     nome: '',
     telefone: '',
@@ -23,6 +23,22 @@ const Form = ({ onSubmit }) => {
     showPassword: false,
     showConfirmPassword: false,
   });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        nome: user.nome || '',
+        telefone: user.telefone || '',
+        cpf: user.cpf || '',
+        email: user.email || '',
+        confirmEmail: user.confirmEmail || '',
+        senha: user.senha || '',
+        confirmSenha: user.confirmSenha || '',
+        showPassword: false,
+        showConfirmPassword: false,
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,7 +76,7 @@ const Form = ({ onSubmit }) => {
       }}
     >
       <Typography variant="h5" align="center" gutterBottom>
-        Cadastro
+        {user ? 'Editar Usuário' : 'Cadastro de Usuário'}
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
@@ -181,7 +197,7 @@ const Form = ({ onSubmit }) => {
               fullWidth
               sx={{ mt: 2 }}
             >
-              Cadastrar
+              {user ? 'Atualizar' : 'Cadastrar'}
             </Button>
           </Grid>
         </Grid>
