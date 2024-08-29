@@ -33,7 +33,6 @@ const Crud = () => {
 
   return (
     <div>
-      <h1>Cadastro de Usuários</h1>
       <Form onSubmit={handleFormSubmit} user={currentUser} />
       <UserList users={users} onEdit={handleEdit} onDelete={deleteUser} />
     </div>
