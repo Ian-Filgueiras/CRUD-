@@ -23,6 +23,7 @@ const Form = ({ onSubmit, user }) => {
     showPassword: false,
     showConfirmPassword: false,
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (user) {
@@ -44,8 +45,22 @@ const Form = ({ onSubmit, user }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.nome) newErrors.nome = 'Nome é obrigatório';
+    if (!formData.telefone) newErrors.telefone = 'Telefone é obrigatório';
+    if (!formData.cpf) newErrors.cpf = 'CPF é obrigatório';
+    if (!formData.email) newErrors.email = 'Email é obrigatório';
+    if (!formData.confirmEmail) newErrors.confirmEmail = 'Confirmar Email é obrigatório';
+    if (!formData.senha) newErrors.senha = 'Senha é obrigatória';
+    if (!formData.confirmSenha) newErrors.confirmSenha = 'Confirmar Senha é obrigatório';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     if (formData.email !== formData.confirmEmail) {
       alert('Os e-mails não coincidem!');
       return;
@@ -82,12 +97,15 @@ const Form = ({ onSubmit, user }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
+              id="nome"
               label="Nome"
               name="nome"
               value={formData.nome}
               onChange={handleChange}
               fullWidth
               required
+              error={!!errors.nome}
+              helperText={errors.nome}
               inputProps={{ maxLength: 50, minLength: 3 }}
             />
           </Grid>
@@ -99,10 +117,13 @@ const Form = ({ onSubmit, user }) => {
             >
               {() => (
                 <TextField
+                  id="telefone"
                   label="Telefone"
                   name="telefone"
                   fullWidth
                   required
+                  error={!!errors.telefone}
+                  helperText={errors.telefone}
                 />
               )}
             </InputMask>
@@ -115,16 +136,20 @@ const Form = ({ onSubmit, user }) => {
             >
               {() => (
                 <TextField
+                  id="cpf"
                   label="CPF"
                   name="cpf"
                   fullWidth
                   required
+                  error={!!errors.cpf}
+                  helperText={errors.cpf}
                 />
               )}
             </InputMask>
           </Grid>
           <Grid item xs={12}>
             <TextField
+              id="email"
               label="Email"
               name="email"
               type="email"
@@ -132,11 +157,14 @@ const Form = ({ onSubmit, user }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={!!errors.email}
+              helperText={errors.email}
               inputProps={{ maxLength: 50 }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
+              id="confirmEmail"
               label="Confirmar Email"
               name="confirmEmail"
               type="email"
@@ -144,11 +172,14 @@ const Form = ({ onSubmit, user }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={!!errors.confirmEmail}
+              helperText={errors.confirmEmail}
               inputProps={{ maxLength: 50 }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
+              id="senha"
               label="Senha"
               name="senha"
               type={formData.showPassword ? 'text' : 'password'}
@@ -156,7 +187,9 @@ const Form = ({ onSubmit, user }) => {
               onChange={handleChange}
               fullWidth
               required
-              inputProps={{ maxLength: 20, minLength: 6 }}
+              error={!!errors.senha}
+              helperText={errors.senha}
+              inputProps={{ maxLength: 20, minLength: 8 }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -170,6 +203,7 @@ const Form = ({ onSubmit, user }) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              id="confirmSenha"
               label="Confirmar Senha"
               name="confirmSenha"
               type={formData.showConfirmPassword ? 'text' : 'password'}
@@ -177,7 +211,9 @@ const Form = ({ onSubmit, user }) => {
               onChange={handleChange}
               fullWidth
               required
-              inputProps={{ maxLength: 20, minLength: 6 }}
+              error={!!errors.confirmSenha}
+              helperText={errors.confirmSenha}
+              inputProps={{ maxLength: 20, minLength: 8 }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -191,6 +227,7 @@ const Form = ({ onSubmit, user }) => {
           </Grid>
           <Grid item xs={12}>
             <Button
+              id="submit"
               type="submit"
               variant="contained"
               color="primary"
