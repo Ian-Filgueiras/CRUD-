@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 
+
 def get_path_with_file_name(filename: str) -> str:
     return os.getcwd() + filename
 
@@ -21,6 +22,7 @@ def configure_selenium() -> webdriver:
 
 
 def test_email_is_invalid():
+    print("Iniciando teste: test_email_is_invalid")
     driver = configure_selenium()
     try:
         element_search_field = driver.find_element(By.ID, "email")
@@ -53,3 +55,7 @@ def test_login_must_save_suscessfuly():
         By.ID, "messageFeedback").text
     assert element_message_feedback == "Username and password correct, you will be redirect to adminsitrador page wait..."
     time.sleep(5)
+
+
+    if __name__ == "__main__":
+        test_email_is_invalid()
